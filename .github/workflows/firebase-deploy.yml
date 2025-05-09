@@ -21,10 +21,10 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Authenticate with Firebase
+      - name: Write Firebase Service Account Key
+        run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}" > $HOME/firebase-key.json
+
+      - name: Deploy to Firebase
         env:
-          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
-        run: |
-          echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > "$HOME/firebase-key.json"
-          firebase login:ci || echo "CI login skipped"
-          firebase deploy --only hosting --project community-agency-dev-d56c6 --token "$(cat $HOME/firebase-key.json)"
+          GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
+        run: firebase deploy --only hosting --project community-agency-dev-d56c6
