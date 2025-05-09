@@ -1,18 +1,29 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Profile</title>
-<link href="styles.css" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+<!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<!-- Firebase Authentication -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBB2wG2dVO6J-VtaS8e7Pno_6sJ0WCYg1o",
+    authDomain: "community-agency.firebaseapp.com",
+    projectId: "community-agency",
+    storageBucket: "community-agency.appspot.com",
+    messagingSenderId: "73696178363",
+    appId: "1:73696178363:web:0d2dd702310202aa03399e"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+
 </head>
 <body>
-<div id="navbar"></div>
-<main>
-<h1>Profile</h1>
-<p>Welcome to Profile page.</p>
-</main>
-
-<script src="/navbar-loader.js"></script></body>
+  <h1>Profile</h1>
+</body>
 </html>
