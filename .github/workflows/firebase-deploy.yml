@@ -1,4 +1,5 @@
-name: Firebase Deploy
+# .github/workflows/firebase-deploy.yml
+name: Deploy to Firebase Hosting
 
 on:
   push:
@@ -8,12 +9,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
@@ -21,10 +21,13 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Write Firebase service account JSON
-        run: echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}" > "$HOME/firebase-key.json"
+      - name: Create Firebase credentials file from secret
+        run: |
+          echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" | jq '.' > "$HOME/firebase-key.json"
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
 
-      - name: Deploy to Firebase
+      - name: Deploy to Firebase Hosting
         run: firebase deploy --only hosting --project community-agency-dev-d56c6
         env:
           GOOGLE_APPLICATION_CREDENTIALS: $HOME/firebase-key.json
