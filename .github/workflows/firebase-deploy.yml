@@ -1,4 +1,4 @@
-name: Deploy to Firebase Hosting (Service Account)
+name: Firebase Hosting CI
 
 on:
   push:
@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -21,10 +21,10 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Authenticate and Deploy to Firebase
-        run: |
-          echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > $HOME/firebase-key.json
-          export GOOGLE_APPLICATION_CREDENTIALS="$HOME/firebase-key.json"
-          firebase deploy --only hosting --project community-agency
+      - name: Authenticate with Firebase
         env:
           GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+        run: |
+          echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > "$HOME/firebase-key.json"
+          firebase login:ci || echo "CI login skipped"
+          firebase deploy --only hosting --project community-agency-dev-d56c6 --token "$(cat $HOME/firebase-key.json)"
